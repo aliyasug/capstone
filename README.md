@@ -13,7 +13,7 @@ The system simulates an order processing workflow including:
 
 ##  Architecture
 
-![Architecture](architecture.png)
+
 
 The system is built using:
 
