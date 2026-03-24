@@ -1,0 +1,50 @@
+services:
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  order-service:
+    build: ./order-service
+    ports:
+      - "3001:3001"
+    depends_on:
+      - rabbitmq
+
+  payment-service:
+    build: ./payment-service
+    ports:
+      - "3002:3002"
+    depends_on:
+      - rabbitmq
+
+  inventory-service:
+    build: ./inventory-service
+    ports:
+      - "3003:3003"
+    depends_on:
+      - rabbitmq
+
+  notification-service:
+    build: ./notification-service
+    ports:
+      - "3004:3004"
+    depends_on:
+      - rabbitmq
+
+  nodered:
+    image: nodered/node-red:latest
+    ports:
+      - "1880:1880"
+    volumes:
+      - nodered_data:/data
+    depends_on:
+      - order-service
+      - payment-service
+      - inventory-service
+      - notification-service
+
+volumes:
+  nodered_data:
